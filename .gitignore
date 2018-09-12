@@ -1,3 +1,8 @@
+# static large files #
+######################
+*.png
+*.pdf
+
 # OS generated files #
 ######################
 .DS_Store

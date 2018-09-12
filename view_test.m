@@ -48,15 +48,14 @@ plot3(viewpoint(1),viewpoint(2),viewpoint(3),'ro');
 text(viewpoint(1),viewpoint(2),viewpoint(3),'viewpoint');
 
 
-view_uv = [];
+view_uv = zeros(length(intsc),2);
 
 % Generate secondary rays
 for i = 1:length(intsc)
-	disp(sprintf('Tracing view ray %d/%d (%.2f %%) \n',i,total_rays,100*i/total_rays))
+	fprintf('Tracing view ray %d/%d (%.2f %%) \n',i,total_rays,100*i/total_rays)
 
 	[fl,u,v,t] = rayQuad(intsc(i,:),viewpoint - intsc(i,:),UL,UR,LR,LL);
-	view_uv = [ view_uv; 
-				u v];
+	view_uv(i,:) = [u v];
 	if plot_bool == 1
 		k = (linspace(0,t,2))';
 		vray = f_param_ray(k,viewpoint - intsc(i,:),intsc(i,:));
