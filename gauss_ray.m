@@ -144,27 +144,28 @@ text(o(1),o(2),o(3),'projector ray origin');
 
 
 % Generate rays from the random samples
-ray_plot =[];
-ray = [];
-data = [];
+ray_plot = zeros(total_rays*2,3);
+ray = zeros(total_rays,3);
+data = zeros(total_rays,7);
 
-for i = 1:length(r_samples)
+for i = 1:total_rays
 	u = r_samples(i,1)/w_pad;
 	v = r_samples(i,2)/w_pad;
 
 	rgb = reshape(test_pad(r_samples(i,2),r_samples(i,1),:),1,3);
 
-	data = [ data ; double(rgb) u v 0 0 ];
+	data(i,:) = [ double(rgb) u v 0 0 ];
 
 	d = (1-u)*(1-v)*UL ...
 		  + u*(1-v)*UR ...
 		  + u*v*LR	 ...
 		  + (1-u)*v*LL;
 
-	ray_plot = [ ray_plot ; o ; d ];
+	ray_plot(i,:) = o;
+    ray_plot(i+1,:) = d;
 
 	d = d - o;
-	ray = [ ray; d ];
+	ray(i,:) = d;
 end
 
 % % ray evaluation
