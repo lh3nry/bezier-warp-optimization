@@ -172,7 +172,7 @@ end
 f_param_ray = @(t,r,o) repmat(o,length(t),1) + [r(:,1).*t r(:,2).*t r(:,3).*t];
 
 % Test for intersections
-intsc = zeros(length(ray),3);
+intsc = [];
 
 % parfor i = 1:length(ray)
 for i = 1:length(ray)
@@ -209,7 +209,7 @@ for i = 1:length(ray)
 				plot3(int_point(1),int_point(2),int_point(3),'*');
 
 			end			% plot or not
-			intsc(i,:) = int_point;
+			intsc = [ intsc; int_point ];
 		end			% if
 	end			% triangle loop
 end			% ray loop
