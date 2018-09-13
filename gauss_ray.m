@@ -46,7 +46,7 @@ set(h, 'Position', [0 0 win_size win_size]);
 gauss_im = uint8(zeros(w_pad,w_pad,3));
 
 % Pixel blobbing
-blob_bool = 1;
+blob_bool = 0;
 rad = 3;
 
 for i = 1:size(r_samples,1)
