@@ -3,7 +3,7 @@
 function [x] = bilinear_interp(A,u,v)
 	x = zeros(1,3);
 	for i = 1:3
-		G = [A(1,i)A(2,i);A(3,i)A(4,i)];
+		G = [A(4,i) A(3,i);A(2,i) A(1,i)];
 		x(i) = [1-u u] * G *[1-v ; v];
 	end
 
