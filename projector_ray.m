@@ -6,5 +6,5 @@ function out = projector_ray(p_origin, proj, x,y, c_image)
 	xy = floor([x y]);
 	color_out = reshape(c_image(xy(1),xy(2),:),1,3);
 
-	direction = bilinear_interp(proj,u,v);
+	direction = bilinear_interp(proj,u,v) - p_origin;
 	out = [direction color_out];
