@@ -68,4 +68,7 @@ Z = [ 15  5  -5 -15;
 	  15  5  -5 -15 ];
 
 [Q,tri,x,y,z] = bpatch(X,Y,Z,patchdensity);
-trimesh(tri,x,y,z);
+% trimesh(tri,x,y,z);
+% surf(x,y,z);
+surf(Q(:,:,1),Q(:,:,2),Q(:,:,3))
+shading interp

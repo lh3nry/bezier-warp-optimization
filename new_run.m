@@ -27,22 +27,33 @@ plot3(P(:,1),P(:,2),P(:,3),'b*');
 
 bvh = [max([x y z]) ; min([x y z])]
 
-line(bvh(:,1),[0;0],[0;0])
-line(bvh(:,1),repmat(max(y),2,1),[0;0])
-line([0;0],[0;0],bvh(:,3))
-line([0;0],repmat(max(y),2,1),bvh(:,3))
 
-N = [0 0 bvh(1,3)];
-E = [bvh(1,1) 0 0];
-S = -N;
-W = -E;
-NW = [bvh(2,1) 0 bvh(1,3)];
-SW = [bvh(2,1) 0 bvh(2,3)];
-SE = -NW; %[bvh(1,1) 0 bvh(2,3)];
-NE = -SW; %[bvh(1,1) 0 bvh(1,3)];
-OO = zeros(1,3);
 
-plot_quad(1,N,NE,OO,E,'g');
-plot_quad(1,NW,N,W,OO,'r');
-plot_quad(1,W,OO,SW,S,'g');
-plot_quad(1,OO,E,S,SE,'r');
+N = [
+	 -1  3 -3  1;
+	  3 -6  3  0;
+	 -3  3  0  0;
+	  1  0  0  0
+	 ];
+
+Ax = N * X * N';
+Ay = N * Y * N';
+Az = N * Z * N';
+d = rays(1,:);
+o = rays(2,:);
+tol = 1e-3;
+
+U = @(u) [u.^3 u.^2 u.^1 u.^0];
+Udu = @(u) [3.*u.^2 2.*u ones(size(u)) zeros(size(u))];
+
+J = @(u,v,t) [ Udu(u) * Ax * U(v)' U(u) * Ax * Udu(v)' d(1) ; ...
+			   Udu(u) * Ay * U(v)' U(u) * Ay * Udu(v)' d(2) ; ...
+			   Udu(u) * Az * U(v)' U(u) * Az * Udu(v)' d(3) ];
+
+eval_bezier = @(u,w) [U(u)*Ax*U(w)'; U(u)*Ay*U(w)'; U(u)*Az*U(w)'];
+F = @(u,v,t) [ eval_bezier(u,v) - o' - t.*d' ] ;
+
+F(0,0,0)
+J(0,0,0)
+
+J(0,0,0)\F(0,0,0)
