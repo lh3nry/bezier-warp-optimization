@@ -7,8 +7,13 @@ function [rays, plotting] = spawn_rays(r_width, r_height, proj, proj_origin)
 	count = 1;
 	for i = linspace(0,1,r_width)
 		for j = linspace(0,1,r_height)
-			rays(count,:) = bilinear_interp(proj,j,i);
-			plotting(count,:) = rays(count,:);
+			bill = bilinear_interp(proj,j,i);
+			if count > 1
+				rays(ceil(count/2) ,:) = bill;
+			else
+				rays(count ,:) = bill;
+			end
+			plotting(count,:) = bill;
 			plotting(count + 1,:) = proj_origin;
 			count = count + 2;
 		end
