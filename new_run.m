@@ -47,18 +47,21 @@ Udu = @(u) [3.*u.^2 2.*u ones(size(u)) zeros(size(u))];
 
 eval_bezier = @(u,w) [U(u)*Ax*U(w)'; U(u)*Ay*U(w)'; U(u)*Az*U(w)'];
 
+% proj_plane = rot_Ax_T(proj_plane,'x',-50);
+% proj_plane = trans_mat2(proj_plane,0,-9,-17);
 % xx = [0 0 0];
 % Feval = F_(xx);
 % Jeval = J_(xx);
 % o = rays(2,:);
 % invv = J(0,0,0)\F(0,0,0)
 tol = 1e-7;  it_max = 10; t_max = 15; 
-o = [0 0 0];
+% o = [0 0 0];
 for I = 1:length(rays)
 	xx = [0 0 0]; it_count = 0;
-	d = rays(I,:);
+	d = rays(I,:) - o;
 	% d = d/norm(d);
-	plot3([d(1)- o(1)],[d(2)- o(2)],[d(3)- o(3)],'r*')
+	% plot3([d(1) - o(1)],[d(2) - o(2)],[d(3) - o(3)],'r*')
+	plot3([d(1)],[d(2)],[d(3)],'r*')
 	J = @(u,v,t) [ Udu(u) * Ax * U(v)' U(u) * Ax * Udu(v)' -d(1) ; ...
 				   Udu(u) * Ay * U(v)' U(u) * Ay * Udu(v)' -d(2) ; ...
 				   Udu(u) * Az * U(v)' U(u) * Az * Udu(v)' -d(3) ];
@@ -79,7 +82,7 @@ for I = 1:length(rays)
 
 	% o = proj_plane(5,:); % origin of the projector
 
-	rt_point = eval_bezier(xx(1),xx(2))
+	rt_point = eval_bezier(xx(1),xx(2))'
 	% line(o,rt_point,'Color','r','LineWidth',1,'LineStyle','-')
 	plot3([rt_point(1) o(1)],[rt_point(2) o(2)],[rt_point(3) o(3)],'b-')
 end
