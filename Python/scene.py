@@ -1,9 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.tri as mptri
-from mpl_toolkits.mplot3d import Axes3D
-import transforms as xforms
-from matplotlib import cm
+import transforms as trfs
 from matplotlib.colors import ListedColormap as ListCMAP
 import plotly.graph_objs as go
 
@@ -25,7 +21,7 @@ view_plane_triangulated = [[0, 1, 3],
                            [0, 2, 3]]
 view_plane_triangulated = np.array(view_plane_triangulated)
 
-view_plane = xforms.translate(view_plane, 0, 25, 0)
+view_plane = trfs.translate(view_plane, 0, 25, 0)
 
 viewpoint = view_plane[4]
 
@@ -54,8 +50,8 @@ proj_tri_triangulated = [[0, 1, 3],
 
 proj_tri_triangulated = np.array(proj_tri_triangulated)
 
-proj_plane = xforms.rotate(proj_plane, 'x', -50, True)
-proj_plane = xforms.translate(proj_plane, 0, -9, -17)
+proj_plane = trfs.rotate(proj_plane, 'x', -50, True)
+proj_plane = trfs.translate(proj_plane, 0, -9, -17)
 
 proj_origin = proj_plane[4]
 
