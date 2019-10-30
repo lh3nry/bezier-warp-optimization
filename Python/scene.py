@@ -5,9 +5,15 @@ from mpl_toolkits.mplot3d import Axes3D
 import transforms as xforms
 from matplotlib import cm
 from matplotlib.colors import ListedColormap as ListCMAP
+import plotly.graph_objs as go
+
+
+def unpack_array_to_tuple(np_arr):
+    return np_arr[:, 0], np_arr[:, 1], np_arr[:, 2]
 
 
 all_points = np.zeros((1, 3))
+
 w = 7
 distance = -7
 
@@ -19,11 +25,9 @@ view_plane = np.array([[w / 2, 0, w / 2],
 
 view_plane_triangulated = [[0, 1, 3],
                            [0, 2, 3]]
+view_plane_triangulated = np.array(view_plane_triangulated)
 
-# triangulation = mptri.Triangulation(view_plane[:, 0], view_plane[:, 1], view_plane[:, 2],
-#                                    view_plane_triangulated)
-
-view_plane = xforms.translate(view_plane, 0, -25, 0)
+view_plane = xforms.translate(view_plane, 0, 25, 0)
 all_points = np.append(all_points, view_plane, axis=0)
 
 viewpoint = view_plane[4]
@@ -35,18 +39,8 @@ upper_right = view_plane[0]
 lower_right = view_plane[1]
 lower_left = view_plane[3]
 
-fig = plt.figure(1)
-ax = fig.gca(projection='3d')
-
-
-
 cmap_name = 'white'
 cmap_white = ListCMAP([(1, 1, .5)], cmap_name, 1)
-surf = ax.plot_trisurf(view_plane[:4, 0],
-                       view_plane[:4, 1],
-                       view_plane_triangulated,
-                       view_plane[:4, 2], cmap=cmap_white)
-
 
 w_proj = 3
 distance = -6
@@ -69,40 +63,28 @@ all_points = np.append(all_points, proj_plane, axis=0)
 
 proj_origin = proj_plane[4]
 
-# fig = plt.figure(2)
-# ax = fig.gca(projection='3d')
-surf = ax.plot_trisurf(proj_plane[:4, 0],
-                       proj_plane[:4, 1],
-                       proj_tri_triangulated,
-                       proj_plane[:4, 2], cmap=cmap_white)
+X, Y, Z = unpack_array_to_tuple(view_plane[:4])
+mesh1 = go.Mesh3d(x=X, y=Y, z=Z,
+                  delaunayaxis='y')
+A, B, C = unpack_array_to_tuple(proj_plane[:4])
+mesh2 = go.Mesh3d(x=A, y=B, z=C, color='lightpink')
 
+test = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
-print(all_points)
+layout = go.Layout(
+    width=1024,
+    height=1024,
+    scene=dict(
+        camera=dict(
+            eye=dict(x=1.15, y=1.15, z=0.8)),  # the default values are 1.25, 1.25, 1.25
+        xaxis=dict(),
+        yaxis=dict(),
+        zaxis=dict(),
+        aspectmode='manual',  # this string can be 'data', 'cube', 'auto', 'manual'
+        # a custom aspectratio is defined as follows:
+        aspectratio=dict(x=1 / 3, y=1, z=1)
+    )
+)
 
-all_max = np.max(all_points, axis=0)
-all_min = np.min(all_points, axis=0)
-all_mid = (all_max + all_min) / 2
-
-print(all_max)
-print(all_min)
-print(all_mid)
-
-max_val = 5
-min_val = -max_val
-
-
-max_range = (all_max - all_min).max() / 2.0
-
-mid_x = all_mid[0] * 0.5
-mid_y = all_mid[1] * 0.5
-mid_z = all_mid[2] * 0.5
-ax.set_xlim(mid_x - max_range, mid_x + max_range)
-ax.set_ylim(mid_y - max_range, mid_y + max_range)
-ax.set_zlim(mid_z - max_range, mid_z + max_range)
-
-ax.pbaspect = [1, 1, .5]
-
-plt.show()
-
-
-
+fig = go.Figure(data=[mesh1, mesh2, test], layout=layout)
+fig.show()
