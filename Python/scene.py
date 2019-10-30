@@ -12,8 +12,6 @@ def unpack_array_to_tuple(np_arr):
     return np_arr[:, 0], np_arr[:, 1], np_arr[:, 2]
 
 
-all_points = np.zeros((1, 3))
-
 w = 7
 distance = -7
 
@@ -28,7 +26,6 @@ view_plane_triangulated = [[0, 1, 3],
 view_plane_triangulated = np.array(view_plane_triangulated)
 
 view_plane = xforms.translate(view_plane, 0, 25, 0)
-all_points = np.append(all_points, view_plane, axis=0)
 
 viewpoint = view_plane[4]
 
@@ -59,7 +56,6 @@ proj_tri_triangulated = np.array(proj_tri_triangulated)
 
 proj_plane = xforms.rotate(proj_plane, 'x', -50, True)
 proj_plane = xforms.translate(proj_plane, 0, -9, -17)
-all_points = np.append(all_points, proj_plane, axis=0)
 
 proj_origin = proj_plane[4]
 
