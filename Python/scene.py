@@ -64,8 +64,10 @@ all_points = np.append(all_points, proj_plane, axis=0)
 proj_origin = proj_plane[4]
 
 X, Y, Z = unpack_array_to_tuple(view_plane[:4])
+I, J, K = unpack_array_to_tuple(view_plane_triangulated)
 mesh1 = go.Mesh3d(x=X, y=Y, z=Z,
-                  delaunayaxis='y')
+                  delaunayaxis='y',
+                  color='cyan')
 A, B, C = unpack_array_to_tuple(proj_plane[:4])
 mesh2 = go.Mesh3d(x=A, y=B, z=C, color='lightpink')
 
