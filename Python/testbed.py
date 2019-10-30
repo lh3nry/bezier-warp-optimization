@@ -5,6 +5,16 @@ from plotly.offline import iplot
 import plotly.figure_factory as FF
 import plotly.graph_objs as go
 from scipy.spatial import Delaunay
+import transforms as xforms
+
+
+def unpack_array_to_tuple(np_arr):
+    # simplices is a numpy array defining the simplices of the triangularization
+    # returns the lists of indices i, j, k
+
+    # return ([triplet[c] for triplet in simplices] for c in range(3))
+    return np_arr[:, 0], np_arr[:, 1], np_arr[:, 2]
+
 
 u = np.linspace(0, 2 * np.pi, 20)
 v = np.linspace(0, 2 * np.pi, 20)
@@ -32,13 +42,10 @@ layout = go.Layout(
                aspectratio=dict(x=1, y=1, z=1)
                )
 )
-fig1 = FF.create_trisurf(x=x, y=y, z=z,
-                         simplices=simplices,
-                         title="Torus", aspectratio=dict(x=1, y=1, z=1))
-data1 = go.Mesh3d(x=x, y=y, z=z, i=simplices[:,0], j=simplices[:,1], k=simplices[:,2])
 
-print(fig1.data[0])
-import transforms as xforms
+I, J, K = unpack_array_to_tuple(simplices)
+data1 = go.Mesh3d(x=x, y=y, z=z,
+                  i=I, j=J, k=K)
 
 w_proj = 3
 distance = -6
@@ -55,13 +62,12 @@ proj_tri_triangulated = [[0, 1, 3],
 proj_tri_triangulated = np.array(proj_tri_triangulated)
 
 proj_plane = xforms.rotate(proj_plane, 'x', -50, True)
-proj_plane = xforms.translate(proj_plane, 0, -9, -17)
-data2 = go.Mesh3d(x=proj_plane[:4, 0],
-                 y=proj_plane[:4, 1],
-                 z=proj_plane[:4, 2])
+proj_plane = xforms.translate(proj_plane, 0, 9, 17)
+
+X, Y, Z = unpack_array_to_tuple(proj_plane[:4])
+data2 = go.Mesh3d(x=X, y=Y, z=Z)
 
 data = [data1, data2]
-# fig1.show()
 
-fig2 = go.Figure(data=data)
-fig2.show()
+fig = go.Figure(data=data)
+fig.show()
