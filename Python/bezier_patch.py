@@ -20,10 +20,25 @@ def bezier_patch(control_x, control_y, control_z, sample_density):
 
     # print(U(0.5))
     # print(W(0.5))
-    print(U(1) @ basis @ control_x @ basis @ W(1))
-    print(U(0) @ basis @ control_x @ basis @ W(0))
-    print(U(0.5) @ basis @ control_x @ basis @ W(0.5))
-    print(patch(0.5, 0.5))
-    print(patch(0, 0))
-    print(patch(1, 1))
+    # print(U(1) @ basis @ control_x @ basis @ W(1))
+    # print(U(0) @ basis @ control_x @ basis @ W(0))
+    # print(U(0.5) @ basis @ control_x @ basis @ W(0.5))
+    # print(patch(0.5, 0.5))
+    # print(patch(0, 0))
+    # print(patch(1, 1))
+
+    r = np.linspace(0,1,sample_density).reshape(-1, 1)
+    s = np.linspace(0,1,sample_density).reshape(-1, 1)
+    #
+    # print(r.shape)
+    # print(s.shape)
+    #
+    # print(U(r))
+    # print(U(r).shape)
+    print('[:,None]')
+    print(U(r[:,None]).shape)
+    print('[None,:]')
+    print(U(r[None,:]).shape)
+
+    # print(patch(r,s))
     # return U
