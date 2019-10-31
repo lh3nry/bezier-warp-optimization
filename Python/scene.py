@@ -85,4 +85,22 @@ fig = go.Figure(data=[mesh1, mesh2, test], layout=layout)
 
 import bezier_patch as bpatch
 
-bpatch.bezier_patch(0,0,0,0)
+Cx = [[-15, -15, -15, -15],
+      [ -5,  -5,  -5,  -5],
+      [  5,   5,   5,   5],
+      [ 15,  15,  15,  15]]
+Cx = np.array(Cx)
+
+Cy = [[0, 5, 5, 0],
+      [5, 5, 5, 5],
+      [5, 5, 5, 5],
+      [0, 5, 5, 0]]
+Cy = np.array(Cy)
+
+Cz = [[15, 5, -5, -15],
+      [15, 5, -5, -15],
+      [15, 5, -5, -15],
+      [15, 5, -5, -15]]
+Cz = np.array(Cz)
+
+bpatch.bezier_patch(Cx, Cy, Cz, 10)
