@@ -52,7 +52,7 @@ proj_tri_triangulated = [[0, 1, 3],
 proj_tri_triangulated = np.array(proj_tri_triangulated)
 
 proj_plane = trfs.rotate(proj_plane, 'x', -50, True)
-proj_plane = trfs.translate(proj_plane, 0, -9, -17)
+proj_plane = trfs.translate(proj_plane, 0, 9, -17)
 
 proj_origin = proj_plane[4]
 
@@ -91,7 +91,7 @@ Cy = [[0, 5, 5, 0],
       [5, 5, 5, 5],
       [5, 5, 5, 5],
       [0, 5, 5, 0]]
-Cy = np.array(Cy)
+Cy = -np.array(Cy)
 
 Cz = [[15, 5, -5, -15],
       [15, 5, -5, -15],
