@@ -2,6 +2,7 @@ import numpy as np
 import transforms as trfs
 from matplotlib.colors import ListedColormap as ListCMAP
 import plotly.graph_objs as go
+import bezier_patch as bpatch
 
 
 def unpack_array_to_tuple(np_arr):
@@ -76,14 +77,9 @@ layout = go.Layout(
         zaxis=dict(),
         aspectmode='manual',  # this string can be 'data', 'cube', 'auto', 'manual'
         # a custom aspectratio is defined as follows:
-        aspectratio=dict(x=1 / 3, y=1, z=1)
+        aspectratio=dict(x=1, y=1, z=1)
     )
 )
-
-fig = go.Figure(data=[mesh1, mesh2, test], layout=layout)
-# fig.show()
-
-import bezier_patch as bpatch
 
 Cx = [[-15, -15, -15, -15],
       [ -5,  -5,  -5,  -5],
@@ -103,4 +99,11 @@ Cz = [[15, 5, -5, -15],
       [15, 5, -5, -15]]
 Cz = np.array(Cz)
 
-bpatch.bezier_patch(Cx, Cy, Cz, 8)
+Q, T = bpatch.bezier_patch(Cx, Cy, Cz, 8)
+
+Px, Py, Pz = unpack_array_to_tuple(Q)
+mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz)
+bez_scatter = go.Scatter3d(x=Px, y=Py, z=Pz, mode='markers')
+
+fig = go.Figure(data=[mesh1, mesh2, mesh3, bez_scatter], layout=layout)
+fig.show()
