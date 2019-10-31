@@ -103,4 +103,4 @@ Cz = [[15, 5, -5, -15],
       [15, 5, -5, -15]]
 Cz = np.array(Cz)
 
-bpatch.bezier_patch(Cx, Cy, Cz, 10)
+bpatch.bezier_patch(Cx, Cy, Cz, 8)
