@@ -99,11 +99,16 @@ Cz = [[15, 5, -5, -15],
       [15, 5, -5, -15]]
 Cz = np.array(Cz)
 
-Q, T = bpatch.bezier_patch(Cx, Cy, Cz, 8)
+Q, T, patch_tri = bpatch.bezier_patch(Cx, Cy, Cz, 15)
 
 Px, Py, Pz = unpack_array_to_tuple(Q)
-mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz)
+I, J, K = unpack_array_to_tuple(np.array(patch_tri))
+mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz, i=I, j=J, k=K)
 bez_scatter = go.Scatter3d(x=Px, y=Py, z=Pz, mode='markers')
 
-fig = go.Figure(data=[mesh1, mesh2, mesh3, bez_scatter], layout=layout)
+fig = go.Figure(data=[
+    mesh1,
+    mesh2,
+    mesh3  # , bez_scatter
+    ], layout=layout)
 fig.show()
