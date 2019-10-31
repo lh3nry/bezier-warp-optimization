@@ -31,10 +31,17 @@ def bezier_patch(control_x, control_y, control_z, num_samples):
     s = np.linspace(0, 1, num_samples)
 
     patch_tensor = patch(r, s, control_x, control_y, control_z)
-    print(patch_tensor)
-    print(patch_tensor.shape)
+    # print(patch_tensor)
+    # print(patch_tensor.shape)
 
-    patch_list = patch_tensor.transpose(2,1,0).reshape(num_samples**2, 3, order='F')
-    print(patch_list)
+    samples_squared = num_samples**2
+    patch_list = patch_tensor.transpose(2,1,0).reshape(samples_squared, 3, order='F')
+    # print(patch_list)
 
-    return patch_list, patch_tensor
+    triangulation = []
+    for i in range(samples_squared - num_samples - 1):
+        if i % num_samples != num_samples - 1:
+            triangulation.append([i, i+1, i+num_samples])
+            triangulation.append([i+1, i+num_samples+1, i+num_samples])
+
+    return patch_list, patch_tensor, triangulation
