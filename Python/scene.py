@@ -25,7 +25,7 @@ view_plane = trfs.translate(view_plane, 0, 25, 0)
 
 viewpoint = view_plane[4]
 
-print(viewpoint)
+# print(viewpoint)
 
 upper_left = view_plane[2]
 upper_right = view_plane[0]
@@ -81,4 +81,8 @@ layout = go.Layout(
 )
 
 fig = go.Figure(data=[mesh1, mesh2, test], layout=layout)
-fig.show()
+# fig.show()
+
+import bezier_patch as bpatch
+
+bpatch.bezier_patch(0,0,0,0)
