@@ -9,6 +9,32 @@ def unpack_array_to_tuple(np_arr):
     return np_arr[:, 0], np_arr[:, 1], np_arr[:, 2]
 
 
+def plane_bilinear(corners, u, v):
+    G = np.array([
+        [corners[3, 0], corners[2, 0]],
+        [corners[1, 0], corners[0, 0]],
+        [corners[3, 1], corners[2, 1]],
+        [corners[1, 1], corners[0, 1]],
+        [corners[3, 2], corners[2, 2]],
+        [corners[1, 2], corners[0, 2]]
+    ])
+
+    U = np.array([1-u, u])
+    V = np.array([[1-v], [v]])
+    # print(G)
+    # print(G.shape)
+    # print(U.shape)
+    # print(V.shape)
+    # print(U[None, :].shape)
+
+    # print((G @ V).shape)
+    # print(G @ V)
+    interpolated = (G @ V).reshape(2, 3, order='F')
+    # print(interpolated)
+    interpolated = U @ interpolated
+    print(interpolated)
+
+
 w = 7
 distance = -7
 
@@ -111,4 +137,10 @@ fig = go.Figure(data=[
     mesh2,
     mesh3  # , bez_scatter
     ], layout=layout)
-fig.show()
+# fig.show()
+
+print(view_plane[:4])
+plane_bilinear(view_plane[:4], 1, 1)
+plane_bilinear(view_plane[:4], 0, 0)
+plane_bilinear(view_plane[:4], 0, 1)
+plane_bilinear(view_plane[:4], 1, 0)
