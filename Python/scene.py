@@ -28,7 +28,7 @@ def plane_bilinear(corners, u, v):
     return U @ interpolated
 
 w = 7
-distance = -7
+distance = 7
 
 view_plane = np.array([[w / 2, 0, w / 2],
                        [w / 2, 0, -w / 2],
@@ -55,7 +55,7 @@ cmap_name = 'white'
 cmap_white = ListCMAP([(1, 1, .5)], cmap_name, 1)
 
 w_proj = 3
-distance = -6
+distance = 6
 
 proj_plane = [[w_proj / 2, 0, w_proj / 2],
               [w_proj / 2, 0, -w_proj / 2],
@@ -95,7 +95,7 @@ layout = go.Layout(
         zaxis=dict(),
         aspectmode='manual',  # this string can be 'data', 'cube', 'auto', 'manual'
         # a custom aspectratio is defined as follows:
-        aspectratio=dict(x=1, y=1, z=1)
+        aspectratio=dict(x=.85, y=1, z=1)
     )
 )
 
@@ -150,7 +150,16 @@ print(ray_points)
 Rx, Ry, Rz = unpack_array_to_tuple(ray_points)
 ray_points_scatter = go.Scatter3d(x=Rx, y=Ry, z=Rz, mode='markers')
 
+
+X, Y, Z = unpack_array_to_tuple(np.array(view_plane))
+view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
+
+X, Y, Z = unpack_array_to_tuple(np.array(proj_plane))
+proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
+
 fig = go.Figure(data=[
+    view_points,
+    proj_points,
     mesh1,
     mesh2,
     mesh3,  # , bez_scatter
