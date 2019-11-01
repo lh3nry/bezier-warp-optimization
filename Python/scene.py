@@ -21,19 +21,11 @@ def plane_bilinear(corners, u, v):
 
     U = np.array([1-u, u])
     V = np.array([[1-v], [v]])
-    # print(G)
-    # print(G.shape)
-    # print(U.shape)
-    # print(V.shape)
-    # print(U[None, :].shape)
 
-    # print((G @ V).shape)
-    # print(G @ V)
     interpolated = (G @ V).reshape(2, 3, order='F')
-    # print(interpolated)
-    interpolated = U @ interpolated
-    print(interpolated)
+    # interpolated = U @ interpolated
 
+    return U @ interpolated
 
 w = 7
 distance = -7
@@ -132,15 +124,36 @@ I, J, K = unpack_array_to_tuple(np.array(patch_tri))
 mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz, i=I, j=J, k=K)
 bez_scatter = go.Scatter3d(x=Px, y=Py, z=Pz, mode='markers')
 
+# print(view_plane[:4])
+# print(plane_bilinear(view_plane[:4], 1, 1))
+# print(plane_bilinear(view_plane[:4], 0, 0))
+# print(plane_bilinear(view_plane[:4], 0, 1))
+# print(plane_bilinear(view_plane[:4], 1, 0))
+
+ray_density = 5
+ray_edge = np.linspace(0, 1, ray_density)
+x_rays, y_rays = np.meshgrid(ray_edge, ray_edge)
+# print(x_rays)
+# print(y_rays)
+
+rays = np.stack((x_rays, y_rays))
+# print(rays)
+
+rays = rays.transpose((2, 1, 0)).reshape(x_rays.size, 2, order='F')
+# for ray in rays:
+#     print(plane_bilinear(view_plane[:4], ray[0], ray[1]))
+
+ray_points = np.array(
+    [plane_bilinear(proj_plane[:4], ray[0], ray[1]) for ray in rays])
+print(ray_points)
+
+Rx, Ry, Rz = unpack_array_to_tuple(ray_points)
+ray_points_scatter = go.Scatter3d(x=Rx, y=Ry, z=Rz, mode='markers')
+
 fig = go.Figure(data=[
     mesh1,
     mesh2,
-    mesh3  # , bez_scatter
+    mesh3,  # , bez_scatter
+    ray_points_scatter
     ], layout=layout)
-# fig.show()
-
-print(view_plane[:4])
-plane_bilinear(view_plane[:4], 1, 1)
-plane_bilinear(view_plane[:4], 0, 0)
-plane_bilinear(view_plane[:4], 0, 1)
-plane_bilinear(view_plane[:4], 1, 0)
+fig.show()
