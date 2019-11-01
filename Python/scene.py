@@ -150,6 +150,9 @@ print(ray_points)
 Rx, Ry, Rz = unpack_array_to_tuple(ray_points)
 ray_points_scatter = go.Scatter3d(x=Rx, y=Ry, z=Rz, mode='markers')
 
+ray_a = np.array([ray_points[12], proj_origin])
+X, Y, Z = unpack_array_to_tuple(np.array(ray_a))
+ray_check = go.Scatter3d(x=X, y=Y, z=Z, mode='lines', line=dict(color='darkblue', width=2))
 
 X, Y, Z = unpack_array_to_tuple(np.array(view_plane))
 view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
@@ -160,9 +163,10 @@ proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 fig = go.Figure(data=[
     view_points,
     proj_points,
+    ray_check,
+    # ray_points_scatter,
     mesh1,
     mesh2,
-    mesh3,  # , bez_scatter
-    ray_points_scatter
+    mesh3  # , bez_scatter
     ], layout=layout)
 fig.show()
