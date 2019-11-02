@@ -160,6 +160,8 @@ proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 figure_data.append(proj_points)
 figure_data.append(view_points)
 
+bpatch.intersect(Cx, Cy, Cz, proj_origin, ray_points[10])
+
 for point in ray_points:
     ray_i = np.array([point, proj_origin])
     X, Y, Z = unpack_array_to_tuple(np.array(ray_i))
