@@ -35,7 +35,7 @@ def bezier_patch(control_x, control_y, control_z, num_samples):
     # print(patch_tensor.shape)
 
     samples_squared = num_samples**2
-    patch_list = patch_tensor.transpose(2,1,0).reshape(samples_squared, 3, order='F')
+    patch_list = patch_tensor.transpose((2, 1, 0)).reshape(samples_squared, 3, order='F')
     # print(patch_list)
 
     triangulation = []
