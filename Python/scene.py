@@ -82,6 +82,8 @@ mesh1 = go.Mesh3d(x=X, y=Y, z=Z,
 A, B, C = unpack_array_to_tuple(proj_plane[:4])
 mesh2 = go.Mesh3d(x=A, y=B, z=C, color='lightpink')
 
+figure_data = [mesh1, mesh2]
+
 test = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
 layout = go.Layout(
@@ -124,6 +126,8 @@ I, J, K = unpack_array_to_tuple(np.array(patch_tri))
 mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz, i=I, j=J, k=K)
 bez_scatter = go.Scatter3d(x=Px, y=Py, z=Pz, mode='markers')
 
+figure_data.append(mesh3)
+
 # print(view_plane[:4])
 # print(plane_bilinear(view_plane[:4], 1, 1))
 # print(plane_bilinear(view_plane[:4], 0, 0))
@@ -160,13 +164,11 @@ view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 X, Y, Z = unpack_array_to_tuple(np.array(proj_plane))
 proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
-fig = go.Figure(data=[
-    view_points,
-    proj_points,
-    ray_check,
-    # ray_points_scatter,
-    mesh1,
-    mesh2,
-    mesh3  # , bez_scatter
-    ], layout=layout)
+figure_data.append(proj_points)
+figure_data.append(view_points)
+figure_data.append(ray_check)
+
+print(figure_data)
+
+fig = go.Figure(data=figure_data, layout=layout)
 fig.show()
