@@ -24,9 +24,6 @@ def patch(u, v, cx, cy, cz):
 def bezier_patch(control_x, control_y, control_z, num_samples):
     np.set_printoptions(precision=3)
 
-    U = lambda u: np.array([u ** i for i in range(3, -1, -1)])
-    W = lambda w: np.array([[w ** i] for i in range(3, -1, -1)])
-
     r = np.linspace(0, 1, num_samples)
     s = np.linspace(0, 1, num_samples)
 
