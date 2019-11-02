@@ -151,13 +151,6 @@ ray_points = np.array(
     [plane_bilinear(proj_plane[:4], ray[0], ray[1]) for ray in rays])
 print(ray_points)
 
-Rx, Ry, Rz = unpack_array_to_tuple(ray_points)
-ray_points_scatter = go.Scatter3d(x=Rx, y=Ry, z=Rz, mode='markers')
-
-ray_a = np.array([ray_points[12], proj_origin])
-X, Y, Z = unpack_array_to_tuple(np.array(ray_a))
-ray_check = go.Scatter3d(x=X, y=Y, z=Z, mode='lines', line=dict(color='darkblue', width=2))
-
 X, Y, Z = unpack_array_to_tuple(np.array(view_plane))
 view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
@@ -166,9 +159,12 @@ proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
 figure_data.append(proj_points)
 figure_data.append(view_points)
-figure_data.append(ray_check)
 
-print(figure_data)
+for point in ray_points:
+    ray_i = np.array([point, proj_origin])
+    X, Y, Z = unpack_array_to_tuple(np.array(ray_i))
+    ray_plot = go.Scatter3d(x=X, y=Y, z=Z, mode='lines', line=dict(width=2))
+    figure_data.append(ray_plot)
 
 fig = go.Figure(data=figure_data, layout=layout)
 fig.show()
