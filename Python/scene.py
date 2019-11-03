@@ -149,7 +149,7 @@ rays = rays.transpose((2, 1, 0)).reshape(x_rays.size, 2, order='F')
 
 ray_points = np.array(
     [plane_bilinear(proj_plane[:4], ray[0], ray[1]) for ray in rays])
-print(ray_points)
+# print(ray_points)
 
 X, Y, Z = unpack_array_to_tuple(np.array(view_plane))
 view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
@@ -160,12 +160,26 @@ proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 figure_data.append(proj_points)
 figure_data.append(view_points)
 
-bpatch.intersect(Cx, Cy, Cz, proj_origin, ray_points[10])
+# intersect = bpatch.intersect(Cx, Cy, Cz, proj_origin, ray_points[0])
+# ray_i = np.concatenate((intersect, proj_origin[None,:]), axis=0)
+# X, Y, Z = unpack_array_to_tuple(np.array(ray_i))
+# ray_plot = go.Scatter3d(x=X, y=Y, z=Z, mode='lines', line=dict(width=2))
+# figure_data.append(ray_plot)
+
 
 for point in ray_points:
-    ray_i = np.array([point, proj_origin])
+    intersect = bpatch.intersect(Cx, Cy, Cz, proj_origin, point)
+    # print(intersect)
+    # print(intersect.shape)
+    # print(proj_origin)
+    # print(proj_origin.shape)
+    # ray_i = np.array([point, proj_origin])
+    # ray_i = np.array([bpatch.intersect(Cx, Cy, Cz, proj_origin, point), proj_origin])
+    ray_i = np.concatenate((intersect, proj_origin[None,:]), axis=0)
+    # print(ray_i)
     X, Y, Z = unpack_array_to_tuple(np.array(ray_i))
     ray_plot = go.Scatter3d(x=X, y=Y, z=Z, mode='lines', line=dict(width=2))
+    # ray_plot = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
     figure_data.append(ray_plot)
 
 fig = go.Figure(data=figure_data, layout=layout)
