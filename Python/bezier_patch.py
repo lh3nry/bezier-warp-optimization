@@ -48,6 +48,8 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point):
     tol = 1e-10
     max_itr = 10
     t_max = 10
+
+    # Pre-compute constant matrices
     Ax = basis @ control_x @ basis
     Ay = basis @ control_y @ basis
     Az = basis @ control_z @ basis
@@ -58,8 +60,13 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point):
     V = lambda v: np.array([[v ** i] for i in range(3, -1, -1)])
     evaluate_bezier = lambda u, v: np.array([U(u) @ Ax @ V(v), U(u) @ Ay @ V(v), U(u) @ Az @ V(v)])
 
+    # Derivatives of parameter degree vectors
     Udu = lambda u: np.array([3*u**2, 2*u, 1, 0])
-    Vdv = lambda v: np.array([[3*v**2], [2*v], [1], [0]])
+    Vdv = lambda v: np.array([[3*v**2],
+                              [2*v],
+                              [1],
+                              [0]    ])
+
     jacobian = lambda u, v, t: np.array([
         [np.float64(Udu(u) @ Ax @ V(v)), np.float64(U(u) @ Ax @ Vdv(v)), -ray_direction[0]],
         [np.float64(Udu(u) @ Ay @ V(v)), np.float64(U(u) @ Ay @ Vdv(v)), -ray_direction[1]],
