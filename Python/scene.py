@@ -3,6 +3,8 @@ import transforms as trfs
 import plotly.graph_objs as go
 import bezier_patch as bpatch
 
+import chart_studio.plotly as ply
+import plotly_set_credentials
 
 def unpack_array_to_tuple(np_arr):
     return np_arr[:, 0], np_arr[:, 1], np_arr[:, 2]
@@ -147,3 +149,5 @@ layout = go.Layout(
 )
 fig = go.Figure(data=figure_data, layout=layout)
 fig.show()
+
+ply.plot(fig, filename='bezier_test', auto_open=True)
