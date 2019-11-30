@@ -5,13 +5,13 @@ import bezier_patch as bpatch
 import utils as u
 
 import chart_studio.plotly as ply
-import plotly_set_credentials
+# import plotly_set_credentials
 
 
 '''
 Define view and projection planes
 '''
-w = 7
+w = 5
 distance = 7
 
 view_plane = np.array([[w / 2, 0, w / 2],
