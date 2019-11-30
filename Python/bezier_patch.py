@@ -44,8 +44,8 @@ def bezier_patch(control_x, control_y, control_z, num_samples):
     return patch_list, patch_tensor, triangulation
 
 
-def intersect(control_x, control_y, control_z, ray_origin, ray_point):
-    tol = 1e-10
+def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate = np.zeros((3, 1)), demo = False):
+    tol = 1e-12
     max_itr = 10
     t_max = 10
 
@@ -79,8 +79,8 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point):
 
     itr_count = 1
     newton_update = np.ones((3, 1))
-    x_i = np.zeros((3, 1))
     while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol) and itr_count <= max_itr :
+    x_i = estimate
         newton_update = - np.linalg.solve(J(x_i), F(x_i))
         # print(itr_count)
         # print(newton_update)
@@ -88,8 +88,9 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point):
         x_i += newton_update
         itr_count += 1
 
-    intersection_point = evaluate_bezier(np.float64(x_i[0]), np.float64(x_i[1])).transpose()
-
-    return intersection_point
     u, v, t = np.float64(x_i[0]), np.float64(x_i[1]), np.float64(x_i[2])
+
+    ray_eval = np.array(ray_origin + t * ray_direction)
+    # intersection_point = evaluate_bezier(np.float64(x_i[0]), np.float64(x_i[1])).transpose()
+    intersection_point = ray_eval[None, :]
     return intersection_point, u, v

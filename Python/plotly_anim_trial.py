@@ -1,14 +1,12 @@
 from scene import *
 
-# figure_data.remove(mesh1)
-# figure_data.remove(mesh2)
-# figure_data.remove(proj_points)
-# figure_data.remove(view_points)
+figure_data.remove(mesh2)
+figure_data.remove(proj_points)
 
 def intersection_test(direction, origin):
     intersect, U, V = bpatch.intersect(Cx, Cy, Cz, origin, direction)
-    # assert(0 <= U <= 1)
-    # assert(0 <= V <= 1)
+    # print(intersect)
+    # print(origin[None, :])
 
     if 0 <= U <= 1 and 0 <= V <= 1:
         ray_i = np.concatenate((intersect, origin[None, :]), axis=0)
@@ -39,13 +37,9 @@ rays = rays.transpose((2, 1, 0)).reshape(x_rays.size, 2, order='F')
 ray_points = np.array(
     [u.bilinear_sample_plane(view_plane[:4], ray[0], ray[1]) for ray in rays])
 
-print(intersection_test(ray_points[3], viewpoint))
-print(intersection_test(ray_points[4], viewpoint))
-print(intersection_test(ray_points[9], viewpoint))
-print(intersection_test(ray_points[6], viewpoint))
 
-# for point in ray_points:
-#     intersection_test(point, viewpoint)
+for point in ray_points:
+    intersection_test(point, viewpoint)
 
 fig = go.Figure(data=figure_data, layout=layout)
 fig.show()
