@@ -77,20 +77,30 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate =
     objective = lambda u, v, t: evaluate_bezier(u, v) - ray_origin.reshape(-1,1) - t * ray_direction.reshape(-1,1)
     F = lambda x: objective(np.float64(x[0]), np.float64(x[1]), np.float64(x[2]))
 
-    itr_count = 1
+    itr_count = 0
     newton_update = np.ones((3, 1))
     x_i = estimate
-    while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
-        newton_update = - np.linalg.solve(J(x_i), F(x_i))
-        # print(itr_count)
-        # print(newton_update)
-        # print(x_i)
-        x_i += newton_update
-        itr_count += 1
+    if demo:
+        demo_storage = []
+        while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
+            demo_storage.append((itr_count, x_i))
+            print((itr_count, x_i))
+            newton_update = - np.linalg.solve(J(x_i), F(x_i))
+            x_i += newton_update
+            itr_count += 1
+    else:
+        while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
+            print((itr_count, x_i))
+            newton_update = - np.linalg.solve(J(x_i), F(x_i))
+            x_i += newton_update
+            itr_count += 1
 
     u, v, t = np.float64(x_i[0]), np.float64(x_i[1]), np.float64(x_i[2])
 
     ray_eval = np.array(ray_origin + t * ray_direction)
-    # intersection_point = evaluate_bezier(np.float64(x_i[0]), np.float64(x_i[1])).transpose()
+    # intersection_point = evaluate_bezier(u, v).transpose()
     intersection_point = ray_eval[None, :]
-    return intersection_point, u, v
+
+    if demo:
+        return intersection_point, demo_storage
+    return intersection_point, u, v, t
