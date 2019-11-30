@@ -79,8 +79,8 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate =
 
     itr_count = 1
     newton_update = np.ones((3, 1))
-    while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol) and itr_count <= max_itr :
     x_i = estimate
+    while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
         newton_update = - np.linalg.solve(J(x_i), F(x_i))
         # print(itr_count)
         # print(newton_update)
