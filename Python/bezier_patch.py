@@ -21,6 +21,15 @@ def patch(u, v, cx, cy, cz):
     ])
 
 
+def evaluate_bezier_point(u, v, Cx, Cy, Cz):
+    U = lambda u: np.array([u ** i for i in range(3, -1, -1)])
+    V = lambda v: np.array([[v ** i] for i in range(3, -1, -1)])
+    Ax = basis @ Cx @ basis
+    Ay = basis @ Cy @ basis
+    Az = basis @ Cz @ basis
+
+    return np.array([U(u) @ Ax @ V(v), U(u) @ Ay @ V(v), U(u) @ Az @ V(v)])
+
 def bezier_patch(control_x, control_y, control_z, num_samples):
     np.set_printoptions(precision=3)
 
