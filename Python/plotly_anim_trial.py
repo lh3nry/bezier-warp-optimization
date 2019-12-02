@@ -37,7 +37,7 @@ def intersection_demo(direction, origin):
     estimate = .5 * np.ones((3,1))
     intersect, demo = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate, demo=True)
     # intersect_plot(demo[0][1][0], demo[0][1][1], origin, point)
-    intersect_plot(0, 0, origin, intersect)
+    # intersect_plot(0, 0, origin, intersect)
 
     return intersect, demo
 
@@ -66,8 +66,21 @@ ray_points = np.array(
 #     intersection_test(point, viewpoint)
 
 final_intersect, demo_info = intersection_demo(ray_points[24], viewpoint)
-# for x in demo_info:
-    
+for x in demo_info:
+    print(x)
+    u, v = np.float64(x[1][0]), np.float64(x[1][1])
+    ray_intersect = np.array(viewpoint + x[1][2] * (ray_points[24] - viewpoint))
+    patch_point = bpatch.evaluate_bezier_point(u, v, Cx, Cy, Cz)
+    # X, Y, Z = utl.unpack_array_to_tuple(patch_point)
+    figure_data.append (go.Scatter3d(
+        x=patch_point[0],
+        y=patch_point[1],
+        z=patch_point[2],
+        mode='markers',
+        marker=dict(size=4)))
+    # print(ray_intersect[None, :])
+    # print(viewpoint[None, :])
+    intersect_plot(u, v, viewpoint, ray_intersect[None, :])
 
 fig = go.Figure(data=figure_data, layout=layout)
 fig.show()
