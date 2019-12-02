@@ -83,4 +83,25 @@ for x in demo_info:
     intersect_plot(u, v, viewpoint, ray_intersect[None, :])
 
 fig = go.Figure(data=figure_data, layout=layout)
+
+steps = []
+for i in range(4, len(fig.data)):
+    step = dict(
+        method="restyle",
+        args=["visible", [False] * len(fig.data)],
+    )
+    step["args"][1][i] = True  # Toggle i'th trace to "visible"
+    steps.append(step)
+
+sliders = [dict(
+    active=10,
+    currentvalue={"prefix": "Frequency: "},
+    pad={"t": 50},
+    steps=steps
+)]
+
+fig.update_layout(
+    sliders=sliders
+)
+
 fig.show()
