@@ -2,7 +2,7 @@ import numpy as np
 import transforms as trfs
 import plotly.graph_objs as go
 import bezier_patch as bpatch
-import utils as u
+import utils as utl
 
 import chart_studio.plotly as ply
 # import plotly_set_credentials
@@ -53,11 +53,11 @@ proj_plane = trfs.translate(proj_plane, 0, 9, -17)
 
 proj_origin = proj_plane[4]
 
-X, Y, Z = u.unpack_array_to_tuple(view_plane[:4])
+X, Y, Z = utl.unpack_array_to_tuple(view_plane[:4])
 mesh1 = go.Mesh3d(x=X, y=Y, z=Z,
                   delaunayaxis='y',
                   color='cyan')
-A, B, C = u.unpack_array_to_tuple(proj_plane[:4])
+A, B, C = utl.unpack_array_to_tuple(proj_plane[:4])
 mesh2 = go.Mesh3d(x=A, y=B, z=C, color='lightpink')
 figure_data = [mesh1, mesh2]
 
@@ -84,16 +84,16 @@ Cz = np.array(Cz)
 
 Q, T, patch_tri = bpatch.bezier_patch(Cx, Cy, Cz, 15)
 
-Px, Py, Pz = u.unpack_array_to_tuple(Q)
-I, J, K = u.unpack_array_to_tuple(np.array(patch_tri))
+Px, Py, Pz = utl.unpack_array_to_tuple(Q)
+I, J, K = utl.unpack_array_to_tuple(np.array(patch_tri))
 mesh3 = go.Mesh3d(x=Px, y=Py, z=Pz, i=I, j=J, k=K)
 # bez_scatter = go.Scatter3d(x=Px, y=Py, z=Pz, mode='markers')
 figure_data.append(mesh3)
 
-X, Y, Z = u.unpack_array_to_tuple(np.array(view_plane))
+X, Y, Z = utl.unpack_array_to_tuple(np.array(view_plane))
 view_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
-X, Y, Z = u.unpack_array_to_tuple(np.array(proj_plane))
+X, Y, Z = utl.unpack_array_to_tuple(np.array(proj_plane))
 proj_points = go.Scatter3d(x=X, y=Y, z=Z, mode='markers')
 
 figure_data.append(proj_points)
