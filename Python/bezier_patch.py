@@ -90,16 +90,18 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate =
     newton_update = np.ones((3, 1))
     x_i = estimate
     if demo:
+        import copy
         demo_storage = []
         while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
-            demo_storage.append((itr_count, x_i))
-            print((itr_count, x_i))
+            demo_storage.append(copy.deepcopy((itr_count, x_i)))
+            # print((itr_count, x_i))
             newton_update = - np.linalg.solve(J(x_i), F(x_i))
             x_i += newton_update
             itr_count += 1
+        print(demo_storage)
     else:
         while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
-            print((itr_count, x_i))
+            # print((itr_count, x_i))
             newton_update = - np.linalg.solve(J(x_i), F(x_i))
             x_i += newton_update
             itr_count += 1
