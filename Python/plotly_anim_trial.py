@@ -66,42 +66,57 @@ ray_points = np.array(
 #     intersection_test(point, viewpoint)
 
 final_intersect, demo_info = intersection_demo(ray_points[24], viewpoint)
+fig = go.Figure(data=figure_data, layout=layout)
+base_traces = len(fig.data)
+base_visibility = [True] * base_traces
+visibility = base_visibility + [False] * (2 * len(demo_info))
+
+steps = []
+
 for x in demo_info:
-    print(x)
     u, v = np.float64(x[1][0]), np.float64(x[1][1])
     ray_intersect = np.array(viewpoint + x[1][2] * (ray_points[24] - viewpoint))
     patch_point = bpatch.evaluate_bezier_point(u, v, Cx, Cy, Cz)
-    # X, Y, Z = utl.unpack_array_to_tuple(patch_point)
-    figure_data.append (go.Scatter3d(
+
+    fig.add_trace(go.Scatter3d(
         x=patch_point[0],
         y=patch_point[1],
         z=patch_point[2],
         mode='markers',
-        marker=dict(size=4)))
-    # print(ray_intersect[None, :])
-    # print(viewpoint[None, :])
-    intersect_plot(u, v, viewpoint, ray_intersect[None, :])
+        marker=dict(color='aliceblue', size=7)))
 
-fig = go.Figure(data=figure_data, layout=layout)
-
-steps = []
-for i in range(4, len(fig.data)):
-    step = dict(
-        method="restyle",
-        args=["visible", [False] * len(fig.data)],
+    X, Y, Z = utl.unpack_array_to_tuple(
+        np.concatenate((ray_intersect[None, :], viewpoint[None, :]), axis=0)
     )
-    step["args"][1][i] = True  # Toggle i'th trace to "visible"
-    steps.append(step)
+    fig.add_trace(go.Scatter3d(
+        x=X,
+        y=Y,
+        z=Z,
+        mode='lines',
+        line=dict(color='lightpink', width=5),
+        showlegend=False))
 
-sliders = [dict(
-    active=10,
-    currentvalue={"prefix": "Frequency: "},
-    pad={"t": 50},
-    steps=steps
+    new_vis = visibility[:]
+    new_vis[x[0] * 2 + base_traces] = True
+    new_vis[x[0] * 2 + base_traces + 1] = True
+
+    steps.append(
+        dict(
+            method="update",
+            args=[{"visible": new_vis},
+                  {"title.text": "Iteration %d" % x[0]}]
+        )
+    )
+
+for i in range(base_traces+2, len(visibility)):
+    fig.data[i]['visible'] = False
+
+sliders = [dict (
+    steps = steps,
+    active = 0,
+    currentvalue = {"prefix": "Iteration: "}
 )]
 
-fig.update_layout(
-    sliders=sliders
-)
+fig.update_layout(sliders = sliders, title={"text": "Iteration %d" % 0})
 
 fig.show()
