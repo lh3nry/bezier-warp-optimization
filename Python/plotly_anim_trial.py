@@ -3,35 +3,35 @@ from scene import *
 figure_data.remove(mesh2)
 figure_data.remove(proj_points)
 
-def intersection_test(direction, origin):
-    # estimate = np.array([[0.5], [0.5], [0.5]])
-    estimate = .5 * np.ones((3,1))
-    intersect, U, V, t = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate)
-    print(intersect, U, V)
-    # print(origin[None, :])
-    # intersect_plot(U, V, origin, intersect)
-    intersect_plot(0, 0, origin[None, :], intersect)
-
-    return intersect, (U, V)
-
-def intersect_plot(U, V, origin, intersect):
-    if 0 <= U <= 1 and 0 <= V <= 1:
-        ray_i = np.concatenate((intersect, origin), axis=0)
-        # X, Y, Z = u.unpack_array_to_tuple(np.array(ray_i))
-        X, Y, Z = utl.unpack_array_to_tuple(np.array(ray_i))
-        ray_plot = go.Scatter3d(
-            x=X, y=Y, z=Z,
-            mode='lines',
-            line=dict(color='lightpink', width=2),
-            showlegend=False)
-        figure_data.append(ray_plot)
-        X, Y, Z = utl.unpack_array_to_tuple(intersect)
-        intersection_markers = go.Scatter3d(
-            x=X, y=Y, z=Z,
-            mode='markers',
-            marker=dict(color='aliceblue', size=3),
-            showlegend=False)
-        figure_data.append(intersection_markers)
+# def intersection_test(direction, origin):
+#     # estimate = np.array([[0.5], [0.5], [0.5]])
+#     estimate = .5 * np.ones((3,1))
+#     intersect, U, V, t = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate)
+#     print(intersect, U, V)
+#     # print(origin[None, :])
+#     # intersect_plot(U, V, origin, intersect)
+#     intersect_plot(0, 0, origin[None, :], intersect)
+#
+#     return intersect, (U, V)
+#
+# def intersect_plot(U, V, origin, intersect):
+#     if 0 <= U <= 1 and 0 <= V <= 1:
+#         ray_i = np.concatenate((intersect, origin), axis=0)
+#         # X, Y, Z = u.unpack_array_to_tuple(np.array(ray_i))
+#         X, Y, Z = utl.unpack_array_to_tuple(np.array(ray_i))
+#         ray_plot = go.Scatter3d(
+#             x=X, y=Y, z=Z,
+#             mode='lines',
+#             line=dict(color='lightpink', width=2),
+#             showlegend=False)
+#         figure_data.append(ray_plot)
+#         X, Y, Z = utl.unpack_array_to_tuple(intersect)
+#         intersection_markers = go.Scatter3d(
+#             x=X, y=Y, z=Z,
+#             mode='markers',
+#             marker=dict(color='aliceblue', size=3),
+#             showlegend=False)
+#         figure_data.append(intersection_markers)
 
 def intersection_demo(direction, origin):
     estimate = .5 * np.ones((3,1))
