@@ -10,13 +10,13 @@ def intersection_test(direction, origin):
     print(intersect, U, V)
     # print(origin[None, :])
     # intersect_plot(U, V, origin, intersect)
-    intersect_plot(0, 0, origin, intersect)
+    intersect_plot(0, 0, origin[None, :], intersect)
 
     return intersect, (U, V)
 
 def intersect_plot(U, V, origin, intersect):
     if 0 <= U <= 1 and 0 <= V <= 1:
-        ray_i = np.concatenate((intersect, origin[None, :]), axis=0)
+        ray_i = np.concatenate((intersect, origin), axis=0)
         # X, Y, Z = u.unpack_array_to_tuple(np.array(ray_i))
         X, Y, Z = utl.unpack_array_to_tuple(np.array(ray_i))
         ray_plot = go.Scatter3d(
