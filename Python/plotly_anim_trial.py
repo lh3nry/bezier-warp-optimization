@@ -51,6 +51,8 @@ rays = rays.transpose((2, 1, 0)).reshape(x_rays.size, 2, order='F')
 ray_points = np.array(
     [utl.bilinear_sample_plane(view_plane[:4], ray[0], ray[1]) for ray in rays])
 
+ray_dir = ray_points[24]
+
 # intersection_test(ray_points[4], viewpoint)
 
 # print(intersection_test(ray_points[12], viewpoint))
@@ -65,7 +67,7 @@ ray_points = np.array(
 # for point in ray_points:
 #     intersection_test(point, viewpoint)
 
-final_intersect, demo_info = intersection_demo(ray_points[24], viewpoint)
+final_intersect, demo_info = intersection_demo(ray_dir, viewpoint)
 fig = go.Figure(data=figure_data, layout=layout)
 base_traces = len(fig.data)
 base_visibility = [True] * base_traces
@@ -75,7 +77,7 @@ steps = []
 
 for x in demo_info:
     u, v = np.float64(x[1][0]), np.float64(x[1][1])
-    ray_intersect = np.array(viewpoint + x[1][2] * (ray_points[24] - viewpoint))
+    ray_intersect = np.array(viewpoint + x[1][2] * (ray_dir - viewpoint))
     patch_point = bpatch.evaluate_bezier_point(u, v, Cx, Cy, Cz)
 
     fig.add_trace(go.Scatter3d(
