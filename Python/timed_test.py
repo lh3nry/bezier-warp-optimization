@@ -1,8 +1,11 @@
 from scene import *
+# Requires 'stltool.py' from Printrun foudn here: https://raw.githubusercontent.com/kliment/Printrun/master/printrun/stltool.py
 from stltool import ray_triangle_intersection, normalize
 
 from plot_utils import intersect_plot
 from time import time, perf_counter, process_time
+
+from scipy import stats
 
 ray_density = 5
 ray_edge = np.linspace(0, 1, ray_density)
