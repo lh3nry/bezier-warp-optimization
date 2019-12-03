@@ -15,23 +15,22 @@ def intersection_test(direction, origin, Cx, Cy, Cz):
 
     return intersect, (U, V)
 
-def intersect_plot(U, V, origin, intersect):
+def intersect_plot(U, V, origin, intersect, line_color='lightpink', point_color='aliceblue'):
     figure_data = []
     if 0 <= U <= 1 and 0 <= V <= 1:
         ray_i = np.concatenate((intersect, origin), axis=0)
-        # X, Y, Z = u.unpack_array_to_tuple(np.array(ray_i))
         X, Y, Z = utl.unpack_array_to_tuple(np.array(ray_i))
         ray_plot = go.Scatter3d(
             x=X, y=Y, z=Z,
             mode='lines',
-            line=dict(color='lightpink', width=2),
+            line=dict(color=line_color, width=3),
             showlegend=False)
         figure_data.append(ray_plot)
         X, Y, Z = utl.unpack_array_to_tuple(intersect)
         intersection_markers = go.Scatter3d(
             x=X, y=Y, z=Z,
             mode='markers',
-            marker=dict(color='aliceblue', size=3),
+            marker=dict(color=point_color, size=4),
             showlegend=False)
         figure_data.append(intersection_markers)
     return figure_data
