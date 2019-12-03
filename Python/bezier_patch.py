@@ -48,7 +48,7 @@ def bezier_patch(control_x, control_y, control_z, num_samples):
     for i in range(samples_squared - num_samples - 1):
         if i % num_samples != num_samples - 1:
             triangulation.append([i, i+1, i+num_samples])
-            triangulation.append([i+1, i+num_samples+1, i+num_samples])
+            triangulation.append([i+num_samples, i+1, i+num_samples+1])
 
     return patch_list, patch_tensor, triangulation
 
@@ -98,7 +98,6 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate =
             newton_update = - np.linalg.solve(J(x_i), F(x_i))
             x_i += newton_update
             itr_count += 1
-        print(demo_storage)
     else:
         while np.abs(x_i[2]) < t_max and (newton_update[0] >= tol or newton_update[1] >= tol or newton_update[2] >= tol) and itr_count <= max_itr :
             # print((itr_count, x_i))
