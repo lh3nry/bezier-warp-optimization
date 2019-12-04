@@ -13,7 +13,7 @@ ray_points = np.array(
 
 for point in ray_points:
     intersect, uv = intersection_test(point, proj_origin, Cx, Cy, Cz)
-    figure_data.extend(intersect_plot(0,0, proj_origin[None, :], intersect))
+    figure_data.extend(intersect_plot(0,0, proj_origin, intersect))
 
 fig = go.Figure(data=figure_data, layout=layout)
 fig.show()

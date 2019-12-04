@@ -107,9 +107,7 @@ def intersect(control_x, control_y, control_z, ray_origin, ray_point, estimate =
 
     u, v, t = np.float64(x_i[0]), np.float64(x_i[1]), np.float64(x_i[2])
 
-    ray_eval = np.array(ray_origin + t * ray_direction)
-    # intersection_point = evaluate_bezier(u, v).transpose()
-    intersection_point = ray_eval[None, :]
+    intersection_point = np.array(ray_origin + t * ray_direction)
 
     if demo:
         return intersection_point, demo_storage

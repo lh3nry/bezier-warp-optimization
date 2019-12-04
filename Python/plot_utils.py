@@ -18,7 +18,7 @@ def intersection_test(direction, origin, Cx, Cy, Cz):
 def intersect_plot(U, V, origin, intersect, line_color='lightpink', point_color='aliceblue'):
     figure_data = []
     if 0 <= U <= 1 and 0 <= V <= 1:
-        ray_i = np.concatenate((intersect, origin), axis=0)
+        ray_i = np.concatenate((intersect[None, :], origin[None, :]), axis=0)
         X, Y, Z = utl.unpack_array_to_tuple(np.array(ray_i))
         ray_plot = go.Scatter3d(
             x=X, y=Y, z=Z,
@@ -26,7 +26,7 @@ def intersect_plot(U, V, origin, intersect, line_color='lightpink', point_color=
             line=dict(color=line_color, width=3),
             showlegend=False)
         figure_data.append(ray_plot)
-        X, Y, Z = utl.unpack_array_to_tuple(intersect)
+        X, Y, Z = utl.unpack_array_to_tuple(intersect[None, :])
         intersection_markers = go.Scatter3d(
             x=X, y=Y, z=Z,
             mode='markers',

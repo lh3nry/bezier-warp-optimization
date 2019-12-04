@@ -41,7 +41,7 @@ for ray in ray_points:
         flag, t = ray_triangle_intersection(viewpoint, normalize(ray - viewpoint), tri_verts)
         if flag:
             point = viewpoint + t * normalize(ray - viewpoint)
-            figure_data.extend(intersect_plot(0, 0, viewpoint[None, :], point[None, :], point_color='maroon'))
+            figure_data.extend(intersect_plot(0, 0, viewpoint, point, point_color='maroon'))
     stats_tri[i,0] = perf_counter() - tri_iteration
     stats_tri[i,1:] = norm(point)
     i += 1
@@ -55,7 +55,7 @@ newton_time = perf_counter()
 for direction in ray_points:
     newton_iteration = perf_counter()
     intersect, U, V, t = bpatch.intersect(Cx, Cy, Cz, viewpoint, direction, estimate=estimate)
-    figure_data.extend(intersect_plot(0, 0, viewpoint[None, :], intersect, point_color='forestgreen'))
+    figure_data.extend(intersect_plot(0, 0, viewpoint, intersect, point_color='forestgreen'))
     stats_newton[i,0] = perf_counter() - newton_iteration
     stats_newton[i,1:] = norm(intersect)
     i+=1
