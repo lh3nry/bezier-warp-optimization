@@ -16,7 +16,6 @@ results_tri = [[0,0,0]] * len(ray_points)
 results_newton = [[0,0,0]] * len(ray_points)
 
 errors = [[0,0,0]] * len(mesh_sizes)
-# errors_newton = [0,0,0] * len(mesh_sizes)
 
 size_index = int(0)
 for samples in mesh_sizes:
@@ -58,3 +57,23 @@ for samples in mesh_sizes:
 print(["{:.5E}".format(x) for x in times_newton])
 print(["{:.5E}".format(x) for x in times_tri])
 print([["{:.5E}, {:.5E}, {:.5E}".format(a,b,c)] for [a,b,c] in errors])
+
+bar1 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_newton,
+                text=["{0:1.3E} seconds".format(x) for x in times_newton], textposition='auto',
+                marker=dict(color='#0099ff'),
+                name='Newton\'s method')
+bar2 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
+              text=["{0:1.3E} seconds".format(x) for x in times_tri], textposition='auto',
+              marker=dict(color='#404040'),
+                name='Ray-Triangle Intersection')
+
+layout = go.Layout(
+    yaxis=dict(
+        type='log',
+        autorange=True
+    )
+)
+fig = go.Figure(data=[bar1, bar2], layout=layout)
+fig.update_layout(yaxis_type="log")
+
+fig.show()
