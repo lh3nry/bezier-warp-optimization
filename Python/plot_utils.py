@@ -8,7 +8,7 @@ def intersection_test(direction, origin, Cx, Cy, Cz):
     # estimate = np.array([[0.5], [0.5], [0.5]])
     estimate = .5 * np.ones((3,1))
     intersect, U, V, t = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate)
-    print(intersect, U, V)
+    # print(intersect, U, V)
     # print(origin[None, :])
     # intersect_plot(U, V, origin, intersect)
     # intersect_plot(0, 0, origin[None, :], intersect)
