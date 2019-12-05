@@ -1,9 +1,8 @@
 from scene import *
-# Requires 'stltool.py' from Printrun foudn here: https://raw.githubusercontent.com/kliment/Printrun/master/printrun/stltool.py
+# Requires 'stltool.py' from Printrun found here: https://raw.githubusercontent.com/kliment/Printrun/master/printrun/stltool.py
 from stltool import ray_triangle_intersection, normalize
 
 import plotly.figure_factory as ff
-from plotly.subplots import make_subplots
 
 from plot_utils import intersect_plot
 from time import time, perf_counter, process_time
@@ -75,10 +74,6 @@ print("average iteration time triangles", np.average(stats_tri[:,0]), "standard 
 print("average iteration time newton", np.average(stats_newton[:,0]), "standard deviation", np.std(stats_newton[:,0]))
 
 header_titles = ['','Newton\'s method', 'Ray-Triangle Intersection']
-headers = dict(values=header_titles,
-                line = dict(color='#7D7F80'),
-                fill = dict(color='#a1c3d1'),
-                align = ['left'] * 5)
 
 column_newton = [newton_time_taken, np.average(stats_newton[:,0]), max(stats_newton[:,0]), min(stats_newton[:,0]), np.std(stats_newton[:,0])]
 column_tri = [triangle_time_taken, np.average(stats_tri[:,0]), max(stats_tri[:,0]), min(stats_tri[:,0]), np.std(stats_tri[:,0])]
@@ -87,13 +82,6 @@ column_newton = ["{:.5E}".format(x) for x in column_newton]
 column_tri = ["{:.5E}".format(x) for x in column_tri]
 
 fields = ['Total time Taken', 'Average iteration time', 'Max iteration time', 'Min iteration time', 'Iteration standard deviation']
-cells = dict(values=[fields,
-                     column_newton,
-                     column_tri],
-             line = dict(color='#7D7F80'),
-             fill = dict(color='#EDFAFF'),
-             align = ['left'] * 5)
-
 
 table_rows = [
     header_titles,
@@ -103,7 +91,7 @@ table_rows = [
     ['Min iteration time', column_newton[3], column_tri[3]],
     ['Iteration standard deviation', column_newton[4], column_tri[4]],
 ]
-# table = go.Table(header=headers, cells=cells)
+
 fig = ff.create_table(table_rows, height_constant=60)
 
 bar1 = go.Bar(x=fields, y=column_newton, xaxis='x2', yaxis='y2',
@@ -113,27 +101,6 @@ bar2 = go.Bar(x=fields, y=column_tri, xaxis='x2', yaxis='y2',
                 marker=dict(color='#404040'),
                 name='Ray-Triangle Intersection')
 
-# fig = make_subplots(rows=1, cols=2,
-#                     specs=[[{"type" : "table"}, {"type" : "bar"}]])
-#
-# fig.add_trace(
-#     table,
-#     row=1, col=1
-# )
-#
-# fig.add_trace(
-#     bar1,
-#     row=1, col=2
-# )
-#
-# fig.add_trace(
-#     bar2,
-#     row=1, col=2
-# )
-# fig = go.Figure(data=[table, trace1, trace2], layout=layout)
-
-# fig['data'].extend(go.Data([bar1, bar2]))
-# fig['data'] = (fig['data'], go.Data([bar1, bar2]))
 fig.add_trace(bar1)
 fig.add_trace(bar2)
 
