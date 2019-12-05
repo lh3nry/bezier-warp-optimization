@@ -111,7 +111,8 @@ fig['layout'].xaxis2.update({'domain': [0.6, 1.]})
 # The graph's yaxis MUST BE anchored to the graph's xaxis
 fig.layout.yaxis2 = {}
 fig['layout'].yaxis2.update({'anchor': 'x2'})
-fig['layout'].yaxis2.update({'title': 'Time (s)'})
+fig['layout'].yaxis2.update({'title': 'Time (seconds - logarithmic)'})
+fig['layout'].yaxis2.update({'type': 'log'})
 # Update the margins to add a title and see graph x-labels.
 fig['layout'].margin.update({'t':50, 'b':100})
 fig['layout'].update({'title': 'Timing comparisons'})
