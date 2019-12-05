@@ -1,15 +1,10 @@
 from scene import *
 from plot_utils import intersection_test, intersect_plot
+from utils import generate_rays
 
 ray_density = 5
-ray_edge = np.linspace(0, 1, ray_density)
-x_rays, y_rays = np.meshgrid(ray_edge, ray_edge)
-rays = np.stack((x_rays, y_rays))
 
-rays = rays.transpose((2, 1, 0)).reshape(x_rays.size, 2, order='F')
-
-ray_points = np.array(
-    [utl.bilinear_sample_plane(proj_plane[:4], ray[0], ray[1]) for ray in rays])
+ray_points = generate_rays(proj_plane, ray_density)
 
 for point in ray_points:
     intersect, uv = intersection_test(point, proj_origin, Cx, Cy, Cz)
