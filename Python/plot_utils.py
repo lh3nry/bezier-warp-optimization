@@ -5,13 +5,8 @@ import utils as utl
 
 
 def intersection_test(direction, origin, Cx, Cy, Cz):
-    # estimate = np.array([[0.5], [0.5], [0.5]])
     estimate = .5 * np.ones((3,1))
     intersect, U, V, t = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate)
-    print(intersect, U, V)
-    # print(origin[None, :])
-    # intersect_plot(U, V, origin, intersect)
-    # intersect_plot(0, 0, origin[None, :], intersect)
 
     return intersect, (U, V)
 
@@ -34,11 +29,3 @@ def intersect_plot(U, V, origin, intersect, line_color='lightpink', point_color=
             showlegend=False)
         figure_data.append(intersection_markers)
     return figure_data
-
-# def intersection_demo(direction, origin, Cx, Cy, Cz):
-#     estimate = .5 * np.ones((3,1))
-#     intersect, demo = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate, demo=True)
-#     # intersect_plot(demo[0][1][0], demo[0][1][1], origin, point)
-#     # intersect_plot(0, 0, origin, intersect)
-#
-#     return intersect, demo
