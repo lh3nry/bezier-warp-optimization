@@ -73,10 +73,12 @@ line_newton = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y
 line_tri = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
 					  mode='lines+markers')
 
-fig_bar = go.Figure(data=[bar1, bar2], layout=layout)
+fig_bar = go.Figure(data=[bar1, bar2], layout=go.Layout(width=1000, height=500))
 fig_bar.update_layout(yaxis_type="log")
+fig_bar['layout'].yaxis.update({'title' : 'Time (seconds)'})
 
-fig_lines = go.Figure(data=[line_newton, line_tri])
+fig_lines = go.Figure(data=[line_newton, line_tri], layout=go.Layout(width=1000, height=500))
+fig_lines['layout'].yaxis.update({'title' : 'Time (seconds)'})
 
 fig_bar.show()
 fig_lines.show()
