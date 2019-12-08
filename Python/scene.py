@@ -101,8 +101,8 @@ figure_data.append(view_points)
 
 
 layout = go.Layout(
-    width=1024,
-    height=1024,
+    width=800,
+    height=800,
     scene=dict(
         camera=dict(
             eye=dict(x=1.15, y=1.15, z=0.8)),  # the default values are 1.25, 1.25, 1.25

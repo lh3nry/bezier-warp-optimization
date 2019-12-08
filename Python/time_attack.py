@@ -6,7 +6,8 @@ from utils import generate_rays, rel_error, abs_error
 
 ray_points = generate_rays(view_plane)
 
-mesh_sizes = [4,8,16,32,64]#,128]
+# mesh_sizes = [4,8,16,32,64]#,128]
+mesh_sizes = [4,8,16] + list(range(32,65,8))
 num_triangles = [0] * len(mesh_sizes)
 
 times_tri = [0] * len(mesh_sizes)
@@ -63,17 +64,23 @@ bar1 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_newt
                 marker=dict(color='#0099ff'),
                 name='Newton\'s method')
 bar2 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
-              text=["{0:1.3E} seconds".format(x) for x in times_tri], textposition='auto',
-              marker=dict(color='#404040'),
+                text=["{0:1.3E} seconds".format(x) for x in times_tri], textposition='auto',
+                marker=dict(color='#404040'),
                 name='Ray-Triangle Intersection')
 
-layout = go.Layout(
-    yaxis=dict(
-        type='log',
-        autorange=True
-    )
-)
-fig = go.Figure(data=[bar1, bar2], layout=layout)
-fig.update_layout(yaxis_type="log")
+line_newton = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y=times_newton,
+						 mode='lines+markers',
+                         name='Newton\'s method')
+line_tri = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
+					  mode='lines+markers',
+                      name='Ray-Triangle Intersection')
 
-fig.show()
+fig_bar = go.Figure(data=[bar1, bar2], layout=go.Layout(width=1000, height=500))
+fig_bar.update_layout(yaxis_type="log")
+fig_bar['layout'].yaxis.update({'title' : 'Time (seconds)'})
+
+fig_lines = go.Figure(data=[line_newton, line_tri], layout=go.Layout(width=1000, height=500))
+fig_lines['layout'].yaxis.update({'title' : 'Time (seconds)'})
+
+fig_bar.show()
+fig_lines.show()
