@@ -83,4 +83,6 @@ fig_lines = go.Figure(data=[line_newton, line_tri], layout=go.Layout(width=1000,
 fig_lines['layout'].yaxis.update({'title' : 'Time (seconds)'})
 
 fig_bar.show()
-fig_lines.show()
+fig_lines.show()fig_lines.show()
+
+# ply.plot(fig_lines, filename='time_attack', auto_open=True)

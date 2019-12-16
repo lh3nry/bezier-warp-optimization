@@ -1,4 +1,5 @@
 from scene import *
+# import chart_studio.plotly as ply
 
 figure_data.remove(mesh2)
 figure_data.remove(proj_points)
@@ -91,4 +92,5 @@ sliders = [dict (
 
 fig.update_layout(sliders = sliders, title={"text": "Iteration %d" % 0})
 
-fig.show()
+# fig.show()
+ply.plot(fig, filename='iteration_anim', auto_open=True)
