@@ -56,19 +56,6 @@ for samples in mesh_sizes:
 
     size_index += 1
 
-# print(["{:.5E}".format(x) for x in times_newton])
-# print(["{:.5E}".format(x) for x in times_tri])
-# print([["{:.5E}, {:.5E}, {:.5E}".format(a,b,c)] for [a,b,c] in errors])
-
-# bar1 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_newton,
-#                 text=["{0:1.3E} seconds".format(x) for x in times_newton], textposition='auto',
-#                 marker=dict(color='#0099ff'),
-#                 name='Newton\'s method')
-# bar2 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
-#                 text=["{0:1.3E} seconds".format(x) for x in times_tri], textposition='auto',
-#                 marker=dict(color='#404040'),
-#                 name='Ray-Triangle Intersection')
-
 names = ['Max Relative Error', 'Min Relative Error', 'Average Relative Error',
          'Max Absolute Error', 'Min Absolute Error', 'Average Absolute Error']
 bar_data = []
@@ -94,4 +81,5 @@ fig_lines['layout'].yaxis.update({'title' : 'Time (seconds)'})
 
 fig_lines.show()
 
+# Uploads plot to chart studio (requires account credentials; check file plotly_set_credentials.py)
 # ply.plot(fig_lines, filename='time_attack', auto_open=True)

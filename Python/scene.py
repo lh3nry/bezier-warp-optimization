@@ -5,8 +5,8 @@ import bezier_patch as bpatch
 import utils as utl
 
 import chart_studio.plotly as ply
+# Use this file to set chart studio account credentials
 # import plotly_set_credentials
-
 
 '''
 Define view and projection planes
@@ -115,6 +115,5 @@ layout = go.Layout(
     )
 )
 
-# fig.show()
-#
+# Uploads plot to chart studio (requires account credentials; check file plotly_set_credentials.py)
 # ply.plot(fig, filename='bezier_test', auto_open=True)
