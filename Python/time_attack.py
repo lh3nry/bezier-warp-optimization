@@ -36,7 +36,6 @@ for samples in mesh_sizes:
                 i += 1
                 break
     times_tri[size_index] = perf_counter() - triangle_time
-    # print(times_tri[size_index])
 
     estimate = .5 * np.ones((3, 1))
     i = 0
@@ -47,7 +46,6 @@ for samples in mesh_sizes:
         results_newton[i] = intersect
         i += 1
     times_newton[size_index] = perf_counter() - newton_time
-    # print(times_newton[size_index])
 
     rel_errs = [rel_error(a, b) for (a, b) in zip(results_newton, results_tri)]
     abs_errs = [abs_error(a, b) for (a, b) in zip(results_newton, results_tri)]
