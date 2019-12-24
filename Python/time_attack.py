@@ -4,7 +4,7 @@ from stltool import ray_triangle_intersection, normalize
 
 from utils import generate_rays, rel_error, abs_error
 
-ray_points = generate_rays(view_plane)
+ray_points = generate_rays(view_plane, ray_density=8)
 
 # mesh_sizes = [4,8,16,32,64]#,128]
 mesh_sizes = [4,8,16] + list(range(32,65,8))
@@ -16,7 +16,7 @@ times_newton = [0] * len(mesh_sizes)
 results_tri = [[0,0,0]] * len(ray_points)
 results_newton = [[0,0,0]] * len(ray_points)
 
-errors = [[0,0,0]] * len(mesh_sizes)
+errors = [[0,0,0,0,0,0]] * len(mesh_sizes)
 
 size_index = int(0)
 for samples in mesh_sizes:
@@ -50,23 +50,24 @@ for samples in mesh_sizes:
     # print(times_newton[size_index])
 
     rel_errs = [rel_error(a, b) for (a, b) in zip(results_newton, results_tri)]
-    errors[size_index] = [max(rel_errs), min(rel_errs), np.average(rel_errs)]
-
+    abs_errs = [abs_error(a, b) for (a, b) in zip(results_newton, results_tri)]
+    errors[size_index] = [max(rel_errs), min(rel_errs), np.average(rel_errs),
+                          max(abs_errs), min(abs_errs), np.average(abs_errs)]
 
     size_index += 1
 
-print(["{:.5E}".format(x) for x in times_newton])
-print(["{:.5E}".format(x) for x in times_tri])
-print([["{:.5E}, {:.5E}, {:.5E}".format(a,b,c)] for [a,b,c] in errors])
+names = ['Max Relative Error', 'Min Relative Error', 'Average Relative Error',
+         'Max Absolute Error', 'Min Absolute Error', 'Average Absolute Error']
+bar_data = []
+for i in [2,5]:
+    y_array = np.array(errors)[:,i]
+    bar = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=y_array,
+                    text=["{0:1.3E}".format(x) for x in y_array], textposition='auto',
+                    name=names[i])
+    bar_data.append(bar)
 
-bar1 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_newton,
-                text=["{0:1.3E} seconds".format(x) for x in times_newton], textposition='auto',
-                marker=dict(color='#0099ff'),
-                name='Newton\'s method')
-bar2 = go.Bar(x=["{0} triangles".format(x) for x in num_triangles], y=times_tri,
-                text=["{0:1.3E} seconds".format(x) for x in times_tri], textposition='auto',
-                marker=dict(color='#404040'),
-                name='Ray-Triangle Intersection')
+fig_bars = go.Figure(data=bar_data, layout=go.Layout(width=1000, height=500))
+fig_bars.show()
 
 line_newton = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y=times_newton,
 						 mode='lines+markers',
@@ -75,12 +76,10 @@ line_tri = go.Scatter(x=["{0} triangles".format(x) for x in num_triangles], y=ti
 					  mode='lines+markers',
                       name='Ray-Triangle Intersection')
 
-fig_bar = go.Figure(data=[bar1, bar2], layout=go.Layout(width=1000, height=500))
-fig_bar.update_layout(yaxis_type="log")
-fig_bar['layout'].yaxis.update({'title' : 'Time (seconds)'})
-
 fig_lines = go.Figure(data=[line_newton, line_tri], layout=go.Layout(width=1000, height=500))
 fig_lines['layout'].yaxis.update({'title' : 'Time (seconds)'})
 
-fig_bar.show()
 fig_lines.show()
+
+# Uploads plot to chart studio (requires account credentials; check file plotly_set_credentials.py)
+# ply.plot(fig_lines, filename='time_attack', auto_open=True)

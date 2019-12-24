@@ -6,10 +6,9 @@ figure_data.remove(proj_points)
 def intersection_demo(direction, origin):
     estimate = .5 * np.ones((3,1))
     intersect, demo = bpatch.intersect(Cx, Cy, Cz, origin, direction, estimate=estimate, demo=True)
-    # intersect_plot(demo[0][1][0], demo[0][1][1], origin, point)
-    # intersect_plot(0, 0, origin, intersect)
 
     return intersect, demo
+
 
 ray_density = 5
 ray_edge = np.linspace(0, 1, ray_density)
@@ -22,20 +21,6 @@ ray_points = np.array(
     [utl.bilinear_sample_plane(view_plane[:4], ray[0], ray[1]) for ray in rays])
 
 ray_dir = ray_points[24]
-
-# intersection_test(ray_points[4], viewpoint)
-
-# print(intersection_test(ray_points[12], viewpoint))
-# print(intersection_demo(ray_points[12], viewpoint))
-
-# print(intersection_test(ray_points[3], viewpoint))
-# print(intersection_test(ray_points[4], viewpoint))
-# print(intersection_test(ray_points[9], viewpoint))
-# print(intersection_test(ray_points[2], viewpoint))
-# print(intersection_test(np.array([2, 25, -2.5]), viewpoint))
-
-# for point in ray_points:
-#     intersection_test(point, viewpoint)
 
 final_intersect, demo_info = intersection_demo(ray_dir, viewpoint)
 fig = go.Figure(data=figure_data, layout=layout)
@@ -92,3 +77,6 @@ sliders = [dict (
 fig.update_layout(sliders = sliders, title={"text": "Iteration %d" % 0})
 
 fig.show()
+
+# Uploads plot to chart studio (requires account credentials; check file plotly_set_credentials.py)
+ply.plot(fig, filename='iteration_anim', auto_open=True)
